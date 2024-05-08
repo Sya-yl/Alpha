@@ -22,6 +22,7 @@ public class Product {
 
     private String image; // 商品图片URL
 
+
     public Integer getProductId() {
         return productId;
     }
