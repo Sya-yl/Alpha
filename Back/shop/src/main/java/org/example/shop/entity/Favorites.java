@@ -1,7 +1,11 @@
 package org.example.shop.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.sql.Timestamp;
 
+@TableName("favorites")
 public class Favorites {
     private Integer favoriteId;
     private Integer userId;
@@ -9,7 +13,8 @@ public class Favorites {
     private Timestamp favoriteTime;
 
     // 构造函数
-    public Favorites() {}
+    public Favorites() {
+    }
 
     // Getter 和 Setter 方法
     public Integer getFavoriteId() {

@@ -2,7 +2,6 @@ package org.example.shop.controller;
 
 import org.example.shop.entity.Order;
 import org.example.shop.mapper.OrderMapper;
-import org.example.shop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,26 +10,25 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     @Autowired
-    private OrderMapper orderService;
+    private OrderMapper orderMapper;
 
     @PostMapping
     public boolean saveOrder(@RequestBody Order order) {
-        return orderService.save(order);
+        return orderMapper.insert(order) > 0;
     }
 
     @GetMapping("/{id}")
     public Order getOrderById(@PathVariable("id") Integer id) {
-        return orderService.getById(id);
+        return orderMapper.selectById(id);
     }
 
     @PutMapping
-    public Order updateOrder(@RequestBody Order order) {
-        orderService.updateById(order);
-        return order;
+    public boolean updateOrder(@RequestBody Order order) {
+        return orderMapper.updateById(order) > 0;
     }
 
     @DeleteMapping("/{id}")
-    public void deleteOrder(@PathVariable("id") Integer id) {
-        orderService.removeById(id);
+    public boolean deleteOrder(@PathVariable("id") Integer id) {
+        return orderMapper.deleteById(id) > 0;
     }
 }

@@ -19,13 +19,13 @@ public class FavoritesController {
 
     // 获取全部收藏
     @GetMapping("/")
-    public List<FavoritesMapper> getAllFavorites() {
+    public List<Favorites> getAllFavorites() {
         return favoritesMapper.selectList(null);
     }
 
     // 根据收藏ID获取单个收藏
     @GetMapping("/{id}")
-    public FavoritesMapper getFavoriteById(@PathVariable("id") Integer id) {
+    public Favorites getFavoriteById(@PathVariable("id") Integer id) {
         return favoritesMapper.selectById(id);
     }
 

@@ -15,7 +15,7 @@ public class UserController {
     private UserMapper userMapper;
 
     @GetMapping("/user/{id}")
-    public boolean login(@PathVariable int id,String password) {  //login
+    public boolean login(@PathVariable int id, String password) {  //login
         // 创建查询条件
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();//id 对应
         queryWrapper.eq("id", id).eq("password", password);//password 对应
@@ -28,33 +28,31 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public User find(int id){  //find
+    public User find(int id) {  //find
         User find_user = userMapper.selectById(id);
 
         return find_user;
     }
 
     @PostMapping("/user")
-    public String register(User user){  //注册新用户
+    public String register(User user) {  //注册新用户
         //必须传输permissions标记用户权限
-        int i=userMapper.insert(user);
-        if(i>0){
+        int i = userMapper.insert(user);
+        if (i > 0) {
             return "Success";
-        }
-        else return "Fail";
+        } else return "Fail";
     }
 
     @DeleteMapping("user/{id}")
-    public String delete(@PathVariable int id){   //delete
-        int i=userMapper.deleteById(id);
-        if(i>0){
+    public String delete(@PathVariable int id) {   //delete
+        int i = userMapper.deleteById(id);
+        if (i > 0) {
             return "Success";
-        }
-        else return "Fail";
+        } else return "Fail";
     }
 
     @PutMapping("/user")
-    public boolean find(int id,User user){  //modify
+    public boolean find(int id, User user) {  //modify
         //  user为前端传递的新数据体(数据一定要全，不能丢失！！！！！！)，id为旧数据用以定位
         // 设置新数据为旧id
         user.setId(id);

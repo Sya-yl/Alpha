@@ -6,10 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderMapper extends BaseMapper<Order> {
-    boolean save(Order order);
-
-    Order getById(Integer id);
-
-    void removeById(Integer id);
-    // 这里可以添加一些特定的数据库操作方法，但基本的 CRUD 操作已经由 BaseMapper 提供
 }

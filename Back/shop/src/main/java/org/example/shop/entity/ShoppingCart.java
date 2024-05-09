@@ -1,4 +1,8 @@
 package org.example.shop.entity;
+
+import com.baomidou.mybatisplus.annotation.TableName;
+
+@TableName("shoppingcart")
 public class ShoppingCart {
     private Integer cartId;
     private Integer userId;
@@ -6,7 +10,8 @@ public class ShoppingCart {
     private Integer quantity;
 
     // 构造函数
-    public ShoppingCart() {}
+    public ShoppingCart() {
+    }
 
     // Getter 和 Setter 方法
     public Integer getCartId() {

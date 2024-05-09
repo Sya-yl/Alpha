@@ -1,7 +1,7 @@
 package org.example.shop.controller;
 
 import org.example.shop.entity.OrderDetail;
-import org.example.shop.service.OrderDetailService;
+import org.example.shop.mapper.OrderDetailMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,26 +10,25 @@ import org.springframework.web.bind.annotation.*;
 public class OrderDetailController {
 
     @Autowired
-    private OrderDetailService orderDetailService;
+    private OrderDetailMapper orderDetailMapper;
 
     @PostMapping
     public boolean saveOrderDetail(@RequestBody OrderDetail orderDetail) {
-        return orderDetailService.save(orderDetail);
+        return orderDetailMapper.insert(orderDetail) > 0;
     }
 
     @GetMapping("/{id}")
     public OrderDetail getOrderDetailById(@PathVariable("id") Integer id) {
-        return orderDetailService.getById(id);
+        return orderDetailMapper.selectById(id);
     }
 
     @PutMapping
-    public OrderDetail updateOrderDetail(@RequestBody OrderDetail orderDetail) {
-        orderDetailService.updateById(orderDetail);
-        return orderDetail;
+    public boolean updateOrderDetail(@RequestBody OrderDetail orderDetail) {
+        return orderDetailMapper.updateById(orderDetail) > 0;
     }
 
     @DeleteMapping("/{id}")
-    public void deleteOrderDetail(@PathVariable("id") Integer id) {
-        orderDetailService.removeById(id);
+    public boolean deleteOrderDetail(@PathVariable("id") Integer id) {
+        return orderDetailMapper.deleteById(id) > 0;
     }
 }

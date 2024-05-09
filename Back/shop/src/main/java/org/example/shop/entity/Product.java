@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 @TableName("product")
 public class Product {
-        private Integer id;
+    private Integer id;
     private String name;
     // 其他属性
 
