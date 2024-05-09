@@ -24,7 +24,7 @@ public class ProductController {
         return productMapper.selectList(null);
     }
 
-    // 根据产品ID获取单个产品
+    // 根据产品ID获取单个产品--“序列号”
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable("id") Integer id) {
         return productMapper.selectById(id);
