@@ -9,7 +9,7 @@ public class User {
     @TableId(type = IdType.AUTO)
     private int id;
     private String name;
-    private String password;
+    public String password;
     private String email;
     private String phonenumber;
     private String address;

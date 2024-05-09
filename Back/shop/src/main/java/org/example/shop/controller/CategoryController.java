@@ -8,38 +8,38 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/category")
 public class CategoryController {
     @Autowired
     private CategoryMapper categoryMapper;
 
     // 创建类别
-    @PostMapping
+    @PostMapping("/category")
     public void createCategory(@RequestBody Category category) {
         categoryMapper.insert(category);
     }
 
     // 根据ID获取类别
-    @GetMapping("/{id}")
+    @GetMapping("/category/{id}")
     public Category getCategoryById(@PathVariable("id") Integer id) {
         return categoryMapper.selectById(id);
     }
 
     // 更新类别
-    @PutMapping("/{id}")
+    @PutMapping("/category/{id}")
     public void updateCategory(@PathVariable("id") Integer id, @RequestBody Category category) {
         category.setId(id);
         categoryMapper.updateById(category);
     }
 
     // 删除类别
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/category/{id}")
     public void deleteCategory(@PathVariable("id") Integer id) {
         categoryMapper.deleteById(id);
     }
 
     // 获取所有类别
-    @GetMapping
+    @GetMapping("/category")
     public List<Category> getAllCategories() {
         return categoryMapper.selectList(null);
     }

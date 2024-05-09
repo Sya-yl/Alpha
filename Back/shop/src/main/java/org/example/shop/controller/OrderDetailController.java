@@ -6,28 +6,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/orderDetails")
 public class OrderDetailController {
 
     @Autowired
     private OrderDetailMapper orderDetailMapper;
 
-    @PostMapping
+    @PostMapping("/orderdetails")
     public boolean saveOrderDetail(@RequestBody OrderDetail orderDetail) {
         return orderDetailMapper.insert(orderDetail) > 0;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/orderdetails/{id}")
     public OrderDetail getOrderDetailById(@PathVariable("id") Integer id) {
         return orderDetailMapper.selectById(id);
     }
 
-    @PutMapping
+    @PutMapping("/orderdetails")
     public boolean updateOrderDetail(@RequestBody OrderDetail orderDetail) {
         return orderDetailMapper.updateById(orderDetail) > 0;
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/orderdetails/{id}")
     public boolean deleteOrderDetail(@PathVariable("id") Integer id) {
         return orderDetailMapper.deleteById(id) > 0;
     }

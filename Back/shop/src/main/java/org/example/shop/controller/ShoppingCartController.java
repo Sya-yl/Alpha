@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/shoppingcarts")
 public class ShoppingCartController {
     private final ShoppingCartMapper shoppingCartMapper;
 
@@ -46,7 +45,7 @@ public class ShoppingCartController {
     }
 
     // 删除购物车项目
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/shoppingcart/{id}")
     public void deleteCartById(@PathVariable("id") Integer id) {
         shoppingCartMapper.deleteById(id);
     }

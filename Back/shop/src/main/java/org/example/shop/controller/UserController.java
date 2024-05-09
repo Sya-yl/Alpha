@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class UserController {
@@ -16,15 +17,8 @@ public class UserController {
 
     @GetMapping("/user/{id}")
     public boolean login(@PathVariable int id, String password) {  //login
-        // 创建查询条件
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();//id 对应
-        queryWrapper.eq("id", id).eq("password", password);//password 对应
-
-        // 执行查询
-        List<User> userList = userMapper.selectList(queryWrapper);
-
-        // 表不为空，则放行
-        return !userList.isEmpty();
+        User user = userMapper.selectById(id);
+        return Objects.equals(user.password, password);
     }
 
     @GetMapping("/user")

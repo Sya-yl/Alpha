@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
 public class ProductController {
     private final ProductMapper productMapper;
 
@@ -19,19 +18,19 @@ public class ProductController {
     }
 
     // 获取全部产品
-    @GetMapping("/")
+    @GetMapping("/product")
     public List<Product> getAllProducts() {
         return productMapper.selectList(null);
     }
 
     // 根据产品ID获取单个产品--“序列号”
-    @GetMapping("/{id}")
+    @GetMapping("/product/{id}")
     public Product getProductById(@PathVariable("id") Integer id) {
         return productMapper.selectById(id);
     }
 
     // 根据分类ID获取产品列表
-    @GetMapping("/category/{categoryId}")
+    @GetMapping("/product/{categoryId}")
     public List<Product> getProductsByCategory(@PathVariable("categoryId") Integer categoryId) {
         QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("category_id", categoryId);
@@ -39,13 +38,13 @@ public class ProductController {
     }
 
     // 添加新产品
-    @PostMapping("/")
+    @PostMapping("/product")
     public void addProduct(@RequestBody Product product) {
         productMapper.insert(product);
     }
 
     // 更新产品
-    @PutMapping("/{id}")
+    @PutMapping("/product/{id}")
     public void updateProduct(@PathVariable("id") Integer id, @RequestBody Product product) {
         product.setId(id);
         productMapper.updateById(product);
