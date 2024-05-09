@@ -1,5 +1,6 @@
 package org.example.shop.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.example.shop.entity.Product;
 import org.example.shop.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,42 +9,51 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/products")
 public class ProductController {
+    private final ProductMapper productMapper;
 
     @Autowired
-    private ProductMapper productMapper;
-
-    // 获取所有产品列表
-    @GetMapping("/products")
-    public List<Product> listProducts() {
-        return productMapper.selectList(null); // 无条件查询全部
+    public ProductController(ProductMapper productMapper) {
+        this.productMapper = productMapper;
     }
 
-    // 根据 ID 查询单个产品
-    @GetMapping("/product/{id}")
-    public Product getProductById(@PathVariable("id") int id) {
+    // 获取全部产品
+    @GetMapping("/")
+    public List<Product> getAllProducts() {
+        return productMapper.selectList(null);
+    }
+
+    // 根据产品ID获取单个产品
+    @GetMapping("/{id}")
+    public Product getProductById(@PathVariable("id") Integer id) {
         return productMapper.selectById(id);
     }
 
-    // 添加一个新产品
-    @PostMapping("/product")
-    public String addProduct(@RequestBody Product product) {
-        int result = productMapper.insert(product);
-        return result > 0 ? "Success" : "Fail";
+    // 根据分类ID获取产品列表
+    @GetMapping("/category/{categoryId}")
+    public List<Product> getProductsByCategory(@PathVariable("categoryId") Integer categoryId) {
+        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("category_id", categoryId);
+        return productMapper.selectList(queryWrapper);
     }
 
-    // 更新产品信息
-    @PutMapping("/product/{id}")
-    public String updateProduct(@PathVariable("id") int id, @RequestBody Product product) {
-        product.setProductId(id);  // 确保ID一致
-        int result = productMapper.updateById(product);
-        return result > 0 ? "Success" : "Fail";
+    // 添加新产品
+    @PostMapping("/")
+    public void addProduct(@RequestBody Product product) {
+        productMapper.insert(product);
+    }
+
+    // 更新产品
+    @PutMapping("/{id}")
+    public void updateProduct(@PathVariable("id") Integer id, @RequestBody Product product) {
+        product.setId(id);
+        productMapper.updateById(product);
     }
 
     // 删除产品
-    @DeleteMapping("/product/{id}")
-    public String deleteProduct(@PathVariable("id") int id) {
-        int result = productMapper.deleteById(id);
-        return result > 0 ? "Success" : "Fail";
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable("id") Integer id) {
+        productMapper.deleteById(id);
     }
 }

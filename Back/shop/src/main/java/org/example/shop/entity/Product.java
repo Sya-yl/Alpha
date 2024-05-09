@@ -7,6 +7,18 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 @TableName("product")
 public class Product {
+        private Integer id;
+    private String name;
+    // 其他属性
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     @TableId(value = "productid", type = IdType.AUTO)
     private Integer productId; // 商品ID
 

@@ -24,6 +24,9 @@ public class Order {
     @TableField("ordertime")
     private Timestamp orderTime; // 下单时间，默认为当前时间戳
 
+    public Order(int id, String sampleOrder) {
+    }
+
     public Integer getOrderId() {
         return orderId;
     }
