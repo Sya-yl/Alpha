@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @RestController
@@ -15,29 +16,32 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
-    @GetMapping("/user/{id}")
-    public boolean login(@PathVariable int id, String password) {  //login
+    @PostMapping("/user/{id}")
+    public boolean login(@PathVariable int id, @RequestBody String password) {  //login
         User user = userMapper.selectById(id);
         return Objects.equals(user.password, password);
     }
 
-    @GetMapping("/user")
-    public User find(int id) {  //find
+    @GetMapping("/user/{id}")
+    public User find(@PathVariable int id) {  //find
         User find_user = userMapper.selectById(id);
 
         return find_user;
     }
 
     @PostMapping("/user")
-    public String register(User user) {  //注册新用户
+    public String register(@RequestBody User user) {  //注册新用户
         //必须传输permissions标记用户权限
+        if (user.getPermissions() == 0){
+            return "Fail: permissions field is required";
+        }
         int i = userMapper.insert(user);
         if (i > 0) {
             return "Success";
         } else return "Fail";
     }
 
-    @DeleteMapping("user/{id}")
+    @DeleteMapping("/user/{id}")
     public String delete(@PathVariable int id) {   //delete
         int i = userMapper.deleteById(id);
         if (i > 0) {
@@ -46,10 +50,8 @@ public class UserController {
     }
 
     @PutMapping("/user")
-    public boolean find(int id, User user) {  //modify
-        //  user为前端传递的新数据体(数据一定要全，不能丢失！！！！！！)，id为旧数据用以定位
-        // 设置新数据为旧id
-        user.setId(id);
+    public boolean modify(@RequestBody User user) {  //modify
+        //  user为前端传递的新数据体(数据一定要全，不能丢失！！！！！！)，id用以定位
         // 更新数据库中的用户信息
         int rows = userMapper.updateById(user);
         // 如果更新成功，返回 true；否则返回 false
