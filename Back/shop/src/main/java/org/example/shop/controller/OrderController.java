@@ -5,6 +5,7 @@ import org.example.shop.mapper.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin()
 @RestController
 public class OrderController {
 
@@ -12,7 +13,7 @@ public class OrderController {
     private OrderMapper orderMapper;
 
     @PostMapping("/order")
-    public boolean saveOrder(@RequestBody Order order) {
+    public boolean insertOrder(@RequestBody Order order) {// insert
         return orderMapper.insert(order) > 0;
     }
 
@@ -22,7 +23,7 @@ public class OrderController {
     }
 
     @PutMapping("/order")
-    public boolean updateOrder(@RequestBody Order order) {
+    public boolean updateOrder(@RequestBody Order order) {// update
         return orderMapper.updateById(order) > 0;
     }
 

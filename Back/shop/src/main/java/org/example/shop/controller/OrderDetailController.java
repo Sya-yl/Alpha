@@ -5,6 +5,7 @@ import org.example.shop.mapper.OrderDetailMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin()
 @RestController
 public class OrderDetailController {
 
@@ -12,7 +13,7 @@ public class OrderDetailController {
     private OrderDetailMapper orderDetailMapper;
 
     @PostMapping("/orderdetails")
-    public boolean saveOrderDetail(@RequestBody OrderDetail orderDetail) {
+    public boolean insertOrderDetail(@RequestBody OrderDetail orderDetail) {
         return orderDetailMapper.insert(orderDetail) > 0;
     }
 

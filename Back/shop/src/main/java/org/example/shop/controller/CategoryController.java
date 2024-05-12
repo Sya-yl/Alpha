@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin()
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
@@ -16,26 +16,28 @@ public class CategoryController {
     // 创建类别
     @PostMapping("/category")
     public void createCategory(@RequestBody Category category) {
-        categoryMapper.insert(category);
+        if (category.getName()!=null)categoryMapper.insert(category);
     }
 
     // 根据ID获取类别
     @GetMapping("/category/{id}")
-    public Category getCategoryById(@PathVariable("id") Integer id) {
+    public Category getCategoryById(@PathVariable Integer id) {
         return categoryMapper.selectById(id);
     }
 
     // 更新类别
     @PutMapping("/category/{id}")
-    public void updateCategory(@PathVariable("id") Integer id, @RequestBody Category category) {
+    public boolean updateCategory(@PathVariable Integer id, @RequestBody Category category) {
         category.setId(id);
-        categoryMapper.updateById(category);
+        int rows = categoryMapper.updateById(category);
+        return rows>0;
     }
 
     // 删除类别
     @DeleteMapping("/category/{id}")
-    public void deleteCategory(@PathVariable("id") Integer id) {
-        categoryMapper.deleteById(id);
+    public boolean deleteCategory(@PathVariable Integer id) {
+        int rows = categoryMapper.deleteById(id);
+        return rows>0;
     }
 
     // 获取所有类别
