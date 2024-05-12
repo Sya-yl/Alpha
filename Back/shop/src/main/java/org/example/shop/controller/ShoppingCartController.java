@@ -32,21 +32,42 @@ public class ShoppingCartController {
 
     // 添加新的购物车项目
     @PostMapping("/shoppingcart")
-    public void addCart(@RequestBody ShoppingCart cart) {
-        shoppingCartMapper.insert(cart);
+    public boolean addCart(@RequestBody ShoppingCart cart) {
+        int rows = shoppingCartMapper.insert(cart);
+        return rows>0;
     }
 
     // 更新购物车项目
-    @PutMapping("/shoppingcart/{id}")
-    public void updateCart(@PathVariable("id") Integer id, @RequestBody ShoppingCart cart) {
-        //整个列表更新，在前端处进行增删改
-        cart.setCartId(id);
-        shoppingCartMapper.updateById(cart);
+    @PutMapping("/shoppingcart")
+    public String updateCart(@RequestBody ShoppingCart cart) {
+        Integer cartId = cart.getCartId();
+        Integer userId = cart.getUserId();
+
+        // 检查 cartId 和 userId 是否有效
+        if (cartId == null || userId == null) {
+            // 处理无效数据的情况，可以抛出异常或者返回错误信息
+            return "ERROR";
+        }
+
+        // 查找特定 cartId 和 userId 对应的购物车数据
+        QueryWrapper<ShoppingCart> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("cartId", cartId);
+        queryWrapper.eq("userId", userId);
+        ShoppingCart existingCart = shoppingCartMapper.selectOne(queryWrapper);
+
+        if (existingCart == null) {
+            // 如果购物车数据不存在，可以根据业务逻辑选择是创建新的购物车数据还是返回错误信息
+            return "ERROR";
+        }
+        cart.setCartId(cartId);
+        int rows = shoppingCartMapper.updateById(cart);
+        return rows>0?"Successes":"ERROR";
     }
 
     // 删除购物车项目
     @DeleteMapping("/shoppingcart/{id}")
-    public void deleteCartById(@PathVariable("id") Integer id) {
-        shoppingCartMapper.deleteById(id);
+    public boolean deleteCartById(@PathVariable("id") Integer id) {
+        int rows = shoppingCartMapper.deleteById(id);
+        return rows>0;
     }
 }

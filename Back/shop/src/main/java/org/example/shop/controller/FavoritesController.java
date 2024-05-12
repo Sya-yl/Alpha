@@ -30,13 +30,15 @@ public class FavoritesController {
 
     // 添加新的收藏
     @PostMapping("/favorites")
-    public void addFavorite(@RequestBody Favorites favorite) {
-        favoritesMapper.insert(favorite);
+    public boolean addFavorite(@RequestBody Favorites favorite) {
+        int rows= favoritesMapper.insert(favorite);
+        return rows>0;
     }
 
     // 删除收藏
     @DeleteMapping("/favorites/{id}")
-    public void deleteFavoriteById(@PathVariable("id") Integer id) {
-        favoritesMapper.deleteById(id);
+    public boolean deleteFavoriteById(@PathVariable("id") Integer id) {
+        int rows = favoritesMapper.deleteById(id);
+        return rows>0;
     }
 }

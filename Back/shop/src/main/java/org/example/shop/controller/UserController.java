@@ -51,7 +51,7 @@ public class UserController {
 
     @PutMapping("/user")
     public boolean modify(@RequestBody User user) {  //modify
-        //  user为前端传递的新数据体(数据一定要全，不能丢失！！！！！！)，id用以定位
+        //  user为前端传递的新类，id用以定位
         // 更新数据库中的用户信息
         int rows = userMapper.updateById(user);
         // 如果更新成功，返回 true；否则返回 false

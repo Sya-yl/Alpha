@@ -12,7 +12,7 @@ public class OrderDetailController {
     private OrderDetailMapper orderDetailMapper;
 
     @PostMapping("/orderdetails")
-    public boolean saveOrderDetail(@RequestBody OrderDetail orderDetail) {
+    public boolean insertOrderDetail(@RequestBody OrderDetail orderDetail) {
         return orderDetailMapper.insert(orderDetail) > 0;
     }
 

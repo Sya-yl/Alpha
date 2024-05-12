@@ -39,20 +39,23 @@ public class ProductController {
 
     // 添加新产品
     @PostMapping("/product")
-    public void addProduct(@RequestBody Product product) {
-        productMapper.insert(product);
+    public boolean addProduct(@RequestBody Product product) {
+        int rows = productMapper.insert(product);
+        return rows>0;
     }
 
     // 更新产品
     @PutMapping("/product/{id}")
-    public void updateProduct(@PathVariable("id") Integer id, @RequestBody Product product) {
+    public boolean updateProduct(@PathVariable("id") Integer id, @RequestBody Product product) {
         product.setId(id);
-        productMapper.updateById(product);
+        int rows = productMapper.updateById(product);
+        return rows>0;
     }
 
     // 删除产品
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable("id") Integer id) {
-        productMapper.deleteById(id);
+    public boolean deleteProduct(@PathVariable("id") Integer id) {
+        int rows = productMapper.deleteById(id);
+        return rows>0;
     }
 }
