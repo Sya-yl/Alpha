@@ -5,6 +5,7 @@ import org.example.shop.mapper.OrderDetailMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin()
 @RestController
 public class OrderDetailController {
 
