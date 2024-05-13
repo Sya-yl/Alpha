@@ -30,12 +30,6 @@ class ShoppingCartControllerTest {
     @Captor
     private ArgumentCaptor<ShoppingCart> cartCaptor; // 用于捕获传递给模拟方法的ShoppingCart对象
 
-    @BeforeEach
-    public void setUp() {
-        // 清除模拟对象之前的状态
-        reset(shoppingCartMapper);
-    }
-
     @Test
     public void testGetAllCarts() throws Exception {
         // 模拟getAllCarts返回空列表
