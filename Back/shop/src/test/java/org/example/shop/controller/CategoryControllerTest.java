@@ -40,7 +40,6 @@ public class CategoryControllerTest {
 
     @Test
     public void testGetCategoryById() {
-        // 模拟从mapper中根据ID获取Category
         when(categoryMapper.selectById(1)).thenReturn(category);
 
         // 调用根据ID获取类别的方法
@@ -53,9 +52,6 @@ public class CategoryControllerTest {
 
     @Test
     public void testUpdateCategory() {
-        // 假设我们更新的是已创建的category对象
-        // 注意：在实际应用中，你通常不会通过控制器来设置ID，但这里是为了测试目的
-        // 调用更新类别的方法
         categoryController.updateCategory(category.getId(), category);
 
         // 验证CategoryMapper的updateById方法是否被调用，并传入正确的Category对象

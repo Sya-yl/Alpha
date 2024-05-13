@@ -2,7 +2,6 @@ package org.example.shop.controller;
 
 import org.example.shop.entity.Favorites;
 import org.example.shop.mapper.FavoritesMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,14 +22,10 @@ public class FavoritesControllerTest {
 
     private static final Integer TEST_FAVORITE_ID = 1;
 
-    @BeforeEach
-    public void setUp() {
-        // 这里不再需要设置mockFavoritesList或mockFavorite，因为我们会在每个测试方法中创建新的实例
-    }
 
     @Test
     public void testGetAllFavorites() {
-        Favorites favorite1 = new Favorites(); // 假设Favorites有默认的无参构造方法
+        Favorites favorite1 = new Favorites();
         Favorites favorite2 = new Favorites();
         List<Favorites> mockFavoritesList = Arrays.asList(favorite1, favorite2);
 
