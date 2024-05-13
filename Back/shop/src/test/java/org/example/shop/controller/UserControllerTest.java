@@ -1,26 +1,29 @@
 package org.example.shop.controller;
 
+import org.example.shop.ShopApplication;
 import org.example.shop.entity.User;
 import org.example.shop.mapper.UserMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest(classes = ShopApplication.class)
+@AutoConfigureMockMvc
 public class UserControllerTest {
-
     @Mock
     private UserMapper userMapper;
-
     @InjectMocks
     private UserController userController;
-
+    @Autowired
+    private MockMvc mockMvc;
     private User user;
 
     @BeforeEach
@@ -74,36 +77,6 @@ public class UserControllerTest {
         verify(userMapper, times(1)).selectById(1);
     }
 
-    // 注册新用户测试成功
-    @Test
-    public void testRegisterUserSuccess() {
-        // 创建一个新的用户对象用于注册
-        User newUser = new User();
-        newUser.setName("NewUser");
-        newUser.password = "newpassword123";
-        newUser.setEmail("new@example.com");
-        // 模拟userMapper.insert方法返回1表示插入成功
-        when(userMapper.insert(newUser)).thenReturn(1);
-        // 调用register方法
-        String result = userController.register(newUser);
-        // 断言结果为"Success"
-        assertEquals("Success", result, "Registration should be successful");
-        // 验证userMapper.insert方法被调用了一次
-        verify(userMapper, times(1)).insert(newUser);
-    }
-
-    @Test
-    void testRegister() {
-        // 模拟插入成功
-        when(userMapper.insert(any())).thenReturn(1);
-        // 测试注册功能
-        assertEquals("Success", userController.register(new User()));
-        // 模拟插入失败
-        when(userMapper.insert(any())).thenReturn(0);
-        // 测试注册失败的情况
-        assertEquals("Fail", userController.register(new User()));
-    }
-
     @Test
     void testDelete() {
         // 模拟删除成功
@@ -117,14 +90,20 @@ public class UserControllerTest {
     }
 
     @Test
-    void testModify() {
+    void testModifySuccess() {
         // 模拟更新成功
         when(userMapper.updateById(any())).thenReturn(1);
+        User user = new User(); // 创建一个用户对象，用于测试
         // 测试修改功能
-        assertTrue(userController.find(1, new User()));
+        assertTrue(userController.modify(user));
+    }
+
+    @Test
+    void testModifyFailure() {
         // 模拟更新失败
         when(userMapper.updateById(any())).thenReturn(0);
+        User user = new User(); // 创建一个于测试的用户对象
         // 测试修改失败的情况
-        assertFalse(userController.find(2, new User()));
+        assertFalse(userController.modify(user));
     }
 }

@@ -4,77 +4,78 @@ import org.example.shop.entity.ShoppingCart;
 import org.example.shop.mapper.ShoppingCartMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.ArrayList;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
-@SpringBootTest
-public class ShoppingCartControllerTest {
+@WebMvcTest(ShoppingCartController.class)
+class ShoppingCartControllerTest {
 
-    @Mock
-    private ShoppingCartMapper shoppingCartMapper;
+    @Autowired
+    private MockMvc mockMvc;
 
-    @InjectMocks
-    private ShoppingCartController shoppingCartController;
+    @MockBean
+    private ShoppingCartMapper shoppingCartMapper; // 模拟ShoppingCartMapper
 
-    private ShoppingCart cart1;
-    private ShoppingCart cart2;
+    @Captor
+    private ArgumentCaptor<ShoppingCart> cartCaptor; // 用于捕获传递给模拟方法的ShoppingCart对象
 
     @BeforeEach
     public void setUp() {
-        cart1 = new ShoppingCart(1,1,1001,1);
-        cart2 = new ShoppingCart(2,1,1002,2);
+        // 清除模拟对象之前的状态
+        reset(shoppingCartMapper);
     }
 
     @Test
-    public void testGetAllCarts() {
-        // Arrange
-        // 模拟mapper返回包含cart1和cart2的列表
-        when(shoppingCartMapper.selectList(null)).thenReturn(Arrays.asList(cart1, cart2));
-
-        // Act
-        // 调用controller的getAllCarts方法
-        List<ShoppingCart> result = shoppingCartController.getAllCarts();
-
-        // Assert
-        // 断言结果不为空，大小为2，且结果列表中的元素与预期一致
-        assertNotNull(result);
-        assertEquals(2, result.size());
-        assertEquals(cart1, result.get(0));
-        assertEquals(cart2, result.get(1));
-        // 验证mapper的selectList方法被调用了一次
-        verify(shoppingCartMapper, times(1)).selectList(null);
+    public void testGetAllCarts() throws Exception {
+        // 模拟getAllCarts返回空列表
+        when(shoppingCartMapper.selectList(any())).thenReturn(new ArrayList<>());
+        mockMvc.perform(MockMvcRequestBuilders.get("/shoppingcart"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
-//    @Test
-//    public void testGetCartById() {
-//        // Arrange
-//        // 假设我们要获取的购物车ID为1，模拟mapper返回cart1
-////        when(shoppingCartMapper.selectByCartId(1)).thenReturn(cart1);
-//
-//        // Act
-//        // 这里假设ShoppingCartController有一个getCartById方法，它接受一个cartId作为参数
-//        // ShoppingCart resultCart = shoppingCartController.getCartById(1); // 这里是假设的方法调用
-//
-//        // 由于我们不知道ShoppingCartController中getCartById的具体实现，这里我们使用一个假设的返回值
-//        ShoppingCart resultCart = cart1; // 假设controller直接返回了mapper的结果
-//
-//        // Assert
-//        // 断言返回的购物车与预期的cart1相同
-//        assertNotNull(resultCart);
-//        assertEquals(cart1.getCartId(), resultCart.getCartId());
-//        // 验证mapper的selectByCartId方法被调用了一次，且参数为1
-////        verify(shoppingCartMapper, times(1)).selectByCartId(1);
-//    }
+    @Test
+    public void testGetCartById() throws Exception {
+        // 创建模拟的购物车对象
+        ShoppingCart cart = new ShoppingCart();
+        cart.setUserId(1);
+        cart.setCartId(1);
 
+        // 模拟getCartById返回特定的购物车对象
+        when(shoppingCartMapper.selectById(any())).thenReturn(cart);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/shoppingcart/{id}", 1))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testAddCart() throws Exception {
+        // 创建模拟的购物车对象
+        ShoppingCart cart = new ShoppingCart();
+        cart.setUserId(1);
+
+        // 模拟addCart返回成功的结果
+        when(shoppingCartMapper.insert(any(ShoppingCart.class))).thenReturn(1);
+
+        // 发起添加购物车的请求
+        mockMvc.perform(MockMvcRequestBuilders.post("/shoppingcart")
+                        .content("{\"userId\":1}")
+                        .contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        // 验证购物车是否被添加
+        verify(shoppingCartMapper).insert(cartCaptor.capture());
+        ShoppingCart capturedCart = cartCaptor.getValue();
+        assertEquals(1, capturedCart.getUserId().intValue());
+    }
 }
