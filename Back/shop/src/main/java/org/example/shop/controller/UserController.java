@@ -26,6 +26,7 @@ public class UserController {
     @GetMapping("/user/{id}")
     public User find(@PathVariable int id) {  //find
         User find_user = userMapper.selectById(id);
+
         return find_user;
     }
 

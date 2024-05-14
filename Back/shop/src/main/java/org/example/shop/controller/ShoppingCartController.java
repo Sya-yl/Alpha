@@ -27,8 +27,8 @@ public class ShoppingCartController {
 
     // 根据userID获取单个购物车项目
     @GetMapping("/shoppingcart/{id}")
-    public ShoppingCart getCartById(@PathVariable("id") Integer id) {
-        return shoppingCartMapper.selectById(id);
+    public List<ShoppingCart>  getCartById(@PathVariable("id") Integer id) {
+        return shoppingCartMapper.findByUserId(id);
     }
 
     // 添加新的购物车项目

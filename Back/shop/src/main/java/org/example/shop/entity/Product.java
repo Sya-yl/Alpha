@@ -4,54 +4,44 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import org.w3c.dom.Text;
+
+import java.io.File;
 
 @TableName("product")
 public class Product {
-    private Integer id;
-    private String name;
-    // 其他属性
 
-    public Integer getId() {
-        return id;
-    }
+    @TableId(type = IdType.AUTO)
+    public Integer productid; // 商品ID
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public String productname; // 商品名称
 
-    @TableId(value = "productid", type = IdType.AUTO)
-    private Integer productId; // 商品ID
+    public String description; // 商品描述
 
-    @TableField("productname")
-    private String productName; // 商品名称
+    public Double price; // 商品价格
 
-    private String description; // 商品描述
+    public Integer categoryid; // 分类ID，外键关联到category表的id字段
 
-    private Double price; // 商品价格
-
-    @TableField("categoryid")
-    private Integer categoryId; // 分类ID，外键关联到category表的id字段
-
-    private String image; // 商品图片URL
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String image ; // 商品图片URL
 
     public void setProductId(Integer productId) {
-        this.productId = productId;
+        this.productid = productId;
     }
 
-    public String getProductName() {
-        return productName;
+    public Integer getProductid() {
+        return productid;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setProductid(Integer productid) {
+        this.productid = productid;
+    }
+
+    public String getProductname() {
+        return productname;
+    }
+
+    public void setProductname(String productname) {
+        this.productname = productname;
     }
 
     public String getDescription() {
@@ -70,12 +60,12 @@ public class Product {
         this.price = price;
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
+    public Integer getCategoryid() {
+        return categoryid;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public void setCategoryid(Integer categoryid) {
+        this.categoryid = categoryid;
     }
 
     public String getImage() {
@@ -85,8 +75,5 @@ public class Product {
     public void setImage(String image) {
         this.image = image;
     }
-
-    public Integer getProductId() {
-        return productId;
-    }
 }
+
