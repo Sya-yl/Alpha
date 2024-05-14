@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>购物车</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        background-color: #f35a5a;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      nav {
+        background-color: #f4f4f4;
+        padding: 10px;
+        text-align: center;
+      }
+      nav a {
+        margin: 0 10px;
+        color: #333;
+        text-decoration: none;
+      }
+    
+.container { 
+  max-width: 1200px; 
+  margin: 20px auto; 
+  padding: 0 20px; 
+  text-align: center;
+}
+
+.product-list { 
+  display: flex; 
+  flex-wrap: wrap; 
+  justify-content: flex-start;
+ padding: 20px; }
+
+      .product {
+        width: 1000px;
+        border: 1px solid #ccc;
+        margin: 10px;
+        padding: 10px;
+        margin: auto;
+        margin-top: 60px;
+      }
+
+      .product img {
+        width:100%;
+        height: auto;
+        margin-bottom: 10px;
+      }
+
+.product-box {
+  width: 1000px;
+  height: 200px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  display: flex; /* 设置为 Flex 容器 */
+  align-items: center; /* 将子元素垂直居中 */
+  justify-content: space-around; /* 在主轴上创建平均的空间 */
+  text-align: center; /* 将文本水平居中 */
+}
+
+
+.product-box:hover { box-shadow:
+0 4px 8px rgba(0, 0, 0, 0.2); } 
+
+.product-box img { width: 100px; height: auto;
+/* 自适应高度 */ border-radius: 5px; }
+
+.product-box h2 { font-size: 2em; margin: 0; /*
+移除标题的外边距 */ }
+
+.product-box p { margin: 10px 0; /* 调整段落的外边距 */ }
+
+.subtotal { font-weight: bold; } 
+.checkout-btn { background-color: #4caf50;
+color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+
+
+/* 商品数量 */
+.product-box .quantity {
+  font-weight: bold;
+}
+
+    </style>
+  </head>
+  <body>
+    <header>
+      <!-- <img src="logo.png" alt="商城logo" class="logo" /> -->
+      <h1>圣火喵喵商城</h1>
+      <nav>
+        <a href="shouye.html">返回首页</a>
+      </nav>
+    </header>
+    <div class="container">
+      <h1>购物车</h1>
+      <button class="checkout-btn">付款</button>
+    </div>
+  </body>
+
+    <div class="product">
+      <div id="product-container">
+        <form id="product"></form>
+      </div>
+    </div>
+  </body>
+
+  <script>
+     // 获取URL中的查询参数
+    const queryString = window.location.search;
+
+    // 解析查询参数
+    const urlParams = new URLSearchParams(queryString);
+
+    // 获取userID参数的值
+    const userId = urlParams.get("userid");
+
+    console.log(userId);
+    // 使用 AJAX 获取商品信息
+    function fetchProducts() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://localhost:8080/shoppingcart/" + userId, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var products = JSON.parse(xhr.responseText);
+                renderCartItems(products);
+            } else {
+                console.error("Failed to fetch products. Status code: " + xhr.status);
+            }
+        }
+    };
+    xhr.send();
+}
+
+function renderCartItems(products) {
+    // 遍历购物车中的每个商品
+    products.forEach(Product => {
+        // 获取商品详细信息
+        console.log(Product.productid);
+        getProductDetails(Product.productid,Product.quantity);
+
+    });
+}
+
+function getProductDetails(productId,quantity) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://localhost:8080/product/" + productId, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var product = JSON.parse(xhr.responseText);
+                displayProducts(product,quantity);
+            } else {
+                console.error("Failed to fetch product details. Status code: " + xhr.status);
+            }
+        }
+    };
+    xhr.send();
+}
+function displayProducts(product,quantity) {
+      var productListContainer = document.getElementById("product-container");
+
+      // 创建商品列表框
+      var productList = document.createElement("div");
+      productList.className = "product-list";
+
+        // 创建商品框
+        var productBox = document.createElement("div");
+        productBox.className = "product-box";
+
+        // 创建商品图片元素
+        var imageElement = document.createElement("img");
+        imageElement.src = "images/" + product.image; // 假设存储了图片的文件名
+        imageElement.alt = product.productname;
+        productBox.appendChild(imageElement);
+
+        // 创建商品名称元素
+        var nameElement = document.createElement("h2");
+        nameElement.textContent = product.productname;
+        productBox.appendChild(nameElement);
+
+        // 创建商品价格元素
+        var priceElement = document.createElement("p");
+        priceElement.textContent = "价格：$" + product.price;
+        productBox.appendChild(priceElement);
+
+        // 创建商品描述元素
+        var descriptionElement = document.createElement("p");
+        descriptionElement.textContent = "详情：" + product.description;
+        productBox.appendChild(descriptionElement);
+
+          // 创建商品数量元素
+        var quantityElement = document.createElement("p");
+        quantityElement.textContent = "数量：" + quantity;
+        productBox.appendChild(quantityElement);
+
+        // 创建删除按钮
+        // 创建删除按钮元素
+        var deleteButton = document.createElement("button");
+        deleteButton.textContent = "删除该商品"; // 添加点击事件监听器
+        deleteButton.addEventListener("click", function () {
+          // 在这里执行删除操作，可以根据需要将产品从页面上删除，或者发送请求将其从数据库中删除
+          // 这里只是示例，你需要根据实际情况进行修改
+          console.log("删除商品：" + product.productname);
+          console.log("id:" + product.productid); // 从页面上删除商品框
+          deleteProduct(product.productid);
+          location.reload();
+          //productListContainer.removeChild(productBox);
+        });
+
+        productBox.appendChild(deleteButton);
+
+        // 将商品框添加到商品列表框
+        productList.appendChild(productBox);
+      ;
+      // 将商品列表框添加到商品框容器内
+      productListContainer.appendChild(productList);
+    }
+
+document.addEventListener("DOMContentLoaded", function () {
+      fetchProducts();
+    });
+
+  </script>
+
+
+</html>
+
+
+

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>商城后台管理</title>
+    <link rel="stylesheet" href="" />
+  </head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    nav ul li {
+      display: inline;
+      margin-right: 20px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    nav ul li a.active {
+      font-weight: bold;
+    }
+
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      padding: 20px;
+    }
+
+    .product {
+      width: 1600px;
+      border: 1px solid #ccc;
+      margin: 10px;
+      padding: 10px;
+    }
+
+    .product img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+    .product-box {
+      width: 750px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+      display: inline-block; /* 添加此行 */
+      margin-right: auto;
+    }
+
+    .product-box:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .product-box img {
+      max-width: 25%;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .product-box h2 {
+      font-size: 1.2em;
+      margin-top: 10px;
+    }
+
+    .product-box p {
+      margin-top: 5px;
+    }
+  </style>
+  <body>
+    <header>
+      <h1>商城后台管理</h1>
+      <nav>
+        <ul>
+          <li><a href="#" class="active">所有商品</a></li>
+          <li><a href="#">电子产品</a></li>
+          <li><a href="#">服装</a></li>
+          <li><a href="#">食品</a></li>
+          <li><a href="#">食品</a></li>
+          <li><a href="#">食品</a></li>
+          <li><a href="#">食品</a></li>
+          <li><a href="#">食品</a></li>
+          <li><a href="#">食品</a></li>
+          <!-- 添加更多类别 -->
+        </ul>
+      </nav>
+    </header>
+    <section class="add-product">
+      <h2>添加新商品</h2>
+      <form id="addProductForm">
+        <div>
+          <label for="product-id">商品id:</label>
+          <input type="text" id="product-id" name="product-id" required />
+        </div>
+        <div>
+          <label for="product-name">商品名称:</label>
+          <input type="text" id="product-name" name="product-name" />
+        </div>
+        <div>
+          <label for="product-image">商品图片:</label>
+          <input
+            type="varchar"
+            id="product-image"
+            name="product-image"
+            accept="image/*"
+          />
+        </div>
+        <div>
+          <label for="product-description">商品详情:</label>
+          <textarea
+            id="product-description"
+            name="product-description"
+          ></textarea>
+        </div>
+        <div>
+          <label for="product-price">商品价格:</label>
+          <input
+            type="number"
+            id="product-price"
+            name="product-price"
+            min="0"
+            step="0.01"
+            required
+          />
+        </div>
+        <div>
+          <label for="product-category">商品种类:</label>
+          <select id="product-category" name="product-category">
+            <option value="" disabled selected>请选择商品种类</option>
+            <option value="1">电子产品</option>
+            <option value="2">服装</option>
+            <option value="3">食品</option>
+            <!-- 添加更多种类 -->
+          </select>
+        </div>
+        <button type="submit">添加商品</button>
+
+        <!-- 商品列表 -->
+        <div class="product">
+          <div id="product-container">
+            <form id="product"></form>
+          </div>
+        </div>
+      </form>
+    </section>
+  </body>
+
+  <script>
+    // 使用 AJAX 获取商品信息
+    function fetchProducts() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "http://localhost:8080/product", true); // 假设后端提供了一个获取所有商品信息的 API
+      xhr.setRequestHeader("Content-Type", "application/json"); // 监听请求状态变化
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            // 请求成功，处理返回的商品信息
+            var products = JSON.parse(xhr.responseText);
+            displayProducts(products);
+          } else {
+            // 请求失败
+            console.error(
+              "Failed to fetch products. Status code: " + xhr.status
+            );
+          }
+        }
+      }; // 发送请求
+
+      xhr.send();
+    }
+    // 将商品信息显示在页面上
+    function displayProducts(products) {
+      var productListContainer = document.getElementById("product-container");
+      // 清空商品框
+      productListContainer.innerHTML = "";
+
+      // 创建商品列表框
+      var productList = document.createElement("div");
+      productList.className = "product-list";
+
+      // 遍历商品信息
+      products.forEach(function (product) {
+        // 创建商品框
+        var productBox = document.createElement("div");
+        productBox.className = "product-box";
+
+        // 创建商品图片元素
+        var imageElement = document.createElement("img");
+        imageElement.src = "images/" + product.image; // 假设存储了图片的文件名
+        imageElement.alt = product.productname;
+        productBox.appendChild(imageElement);
+
+        // 创建商品名称元素
+        var nameElement = document.createElement("h2");
+        nameElement.textContent = product.productname;
+        productBox.appendChild(nameElement);
+
+        // 创建商品价格元素
+        var priceElement = document.createElement("p");
+        priceElement.textContent = "价格：$" + product.price;
+        productBox.appendChild(priceElement);
+
+        // 创建商品描述元素
+        var descriptionElement = document.createElement("p");
+        descriptionElement.textContent = "详情：" + product.description;
+        productBox.appendChild(descriptionElement);
+
+        // 创建删除按钮
+        // 创建删除按钮元素
+        var deleteButton = document.createElement("button");
+        deleteButton.textContent = "删除该商品"; // 添加点击事件监听器
+        deleteButton.addEventListener("click", function () {
+          // 在这里执行删除操作，可以根据需要将产品从页面上删除，或者发送请求将其从数据库中删除
+          // 这里只是示例，你需要根据实际情况进行修改
+          console.log("删除商品：" + product.productname);
+          console.log("id:" + product.productid); // 从页面上删除商品框
+          deleteProduct(product.productid);
+          location.reload();
+          //productListContainer.removeChild(productBox);
+        });
+
+        productBox.appendChild(deleteButton);
+
+        // 将商品框添加到商品列表框
+        productList.appendChild(productBox);
+      });
+
+      // 将商品列表框添加到商品框容器内
+      productListContainer.appendChild(productList);
+    }
+
+    // 页面加载完成后调用 fetchProducts 函数来获取并显示商品信息
+    document.addEventListener("DOMContentLoaded", function () {
+      fetchProducts();
+    });
+
+    //拉起后端数据库指定商品信息删除
+    function deleteProduct(productId) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("DELETE", `http://localhost:8080/${productId}`, true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            var result = JSON.parse(xhr.responseText);
+            if (result) {
+              // 删除成功，重新加载商品信息
+            } else {
+              console.error("Failed to delete product.");
+            }
+          } else {
+            console.error("Error deleting product:", xhr.status);
+          }
+        }
+      };
+
+      xhr.send();
+    }
+
+    // 添加新产品
+    document
+      .getElementById("addProductForm")
+      .addEventListener("submit", function addProduct(event) {
+        event.preventDefault(); // 阻止表单默认提交行为
+        //获取表单数据
+        var formData = new FormData(this);
+        // 创建XMLHttpRequest对象
+        var xhr = new XMLHttpRequest();
+        //请求方法和url
+        xhr.open("POST", "http://localhost:8080/product/", true);
+        // 设置请求头
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+              console.log("产品添加成功：", xhr.responseText); // 可选：你可以执行其他操作，比如更新UI
+            } else {
+              console.error("添加产品失败。");
+            }
+          }
+        };
+
+        var jsonData = JSON.stringify({
+          productid: formData.get("product-id"),
+          productname: formData.get("product-name"),
+          description: formData.get("product-description"),
+          image: formData.get("product-image"),
+          price: formData.get("product-price"),
+          categoryid: document.getElementById("product-category").value,
+        });
+        console.log(jsonData);
+        xhr.send(jsonData);
+        location.reload();
+      });
+  </script>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>登录界面</title>
+    <style>
+      body {
+        background-image: url(https://ts1.cn.mm.bing.net/th/id/R-C.8e5e293cae342149832fff96bb4c8caa?rik=dbonSUJuDVqx5A&riu=http%3a%2f%2fimg.mm4000.com%2ffile%2f8%2fd7%2f6527dce099.jpg%3fdown&ehk=E9%2bVucd%2fent1hsPcwHCre695jRwtoRQJzu1ymZuXJL0%3d&risl=&pid=ImgRaw&r=0);
+        background-repeat: no-repeat;
+        background-position: center center;
+        font-family: Arial, sans-serif;
+      }
+
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 150px;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        width: 95%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .forgot-password {
+        text-align: right;
+        margin-bottom: 20px;
+      }
+
+      .social-login {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .social-login a {
+        display: inline-block;
+        margin: 0 5px;
+        text-decoration: none;
+        color: #333;
+      }
+    </style>
+  </head>
+  <div class="container">
+    <h2>注册</h2>
+    <form id="registrationForm">
+      <label for="regID">id：</label>
+      <input type="text" id="regid" name="id" /><br />
+      <label for="regname">用户名：</label>
+      <input type="text" id="regname" name="name" /><br />
+      <label for="regPassword">密码：</label>
+      <input type="password" id="regPassword" name="password" /><br />
+      <label for="regPermissions">权限（1为用户，0为管理员）：</label>
+      <input type="text" id="regPermissions" name="permissions" /><br />
+      <label for="regPermissions">邮箱</label>
+      <input type="text" id="regemail" name="email" /><br />
+      <label for="regPermissions">电话号码：</label>
+      <input type="text" id="regphonenumber" name="phonenumber" /><br />
+      <label for="regPermissions">地址：</label>
+      <input type="text" id="regaddress" name="address" /><br />
+
+      <input type="submit" value="注册" />
+    </form>
+  </div>
+  <script>
+    // 处理注册表单提交
+    document
+      .getElementById("registrationForm")
+      .addEventListener("submit", function (event) {
+        event.preventDefault(); // 阻止表单默认提交行为
+        // 获取表单中的用户名、密码和权限信息
+        var formData = new FormData(this);
+        // 创建XMLHttpRequest对象
+        var xhr = new XMLHttpRequest();
+        // 设置请求方法和URL
+        xhr.open("POST", "http://localhost:8080/user/", true);
+        // 设置请求头
+        xhr.setRequestHeader("Content-Type", "application/json");
+        0.1;
+        // 监听请求状态变化/
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+              var response = xhr.responseText;
+              alert(response);
+              // 显示响应消息
+              window.location.href = `shouye.html?userId=${formData.get("id")}`;
+            } else {
+              console.error("请求错误:", xhr.status);
+            }
+          }
+        };
+        // 创建用户对象
+
+        // 发送请求
+        var jsonData = JSON.stringify({
+          password: formData.get("password"),
+          id: formData.get("id"),
+          name: formData.get("name"),
+          permissions: formData.get("permissions"),
+        });
+        console.log(jsonData);
+        xhr.send(jsonData);
+      });
+  </script>
+</html>
