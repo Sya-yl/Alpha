@@ -1,10 +1,13 @@
 package org.example.shop.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 @TableName("shoppingcart")
 public class ShoppingCart {
     private Integer cartid;
+    @TableId
     public Integer userid;
     public Integer productid;
     public Integer quantity;

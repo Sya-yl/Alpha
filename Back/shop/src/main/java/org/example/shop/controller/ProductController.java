@@ -34,7 +34,7 @@ public class ProductController {
     @GetMapping("/product/{categoryId}")
     public List<Product> getProductsByCategory(@PathVariable("categoryId") Integer categoryId) {
         QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("category_id", categoryId);
+        queryWrapper.eq("categoryid", categoryId);
         return productMapper.selectList(queryWrapper);
     }
 
