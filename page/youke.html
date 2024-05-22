@@ -1,255 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>商城首页</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-      }
-      header {
-        background-color: #f84f4f;
-        color: #fff;
-        padding: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: fixed;
-        top: 0;
-        width: 100%;
-        z-index: 2; /* Ensure header is on top */
-      }
-      .logo {
-        width: 50px;
-        height: 50px;
-        border-radius: 500px;
-      }
-      .sousuo {
-        width: 50px;
-        height: 40px;
-        background-color: hsla(354, 29%, 44%, 0.998);
-        border-radius: 1000px;
-        margin-left: 10px;
-      }
-      .login-btn {
-        background-color: #4caf50;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-      .login-btn:hover {
-        background-color: #45a049;
-      }
-      nav {
-        background-color: #f4f4f4;
-        padding: 10px;
-        width: 80px;
-        height: 100vh;
-        position: fixed;
-        left: 0;
-        top: 70px; /* Adjusted for the header height */
-        z-index: 1;
-      }
-      nav ul {
-        list-style-type: none;
-        padding: 0;
-      }
-      nav ul li {
-        margin-bottom: 10px;
-      }
-      nav ul li a {
-        color: #333;
-        text-decoration: none;
-      }
-      .product-list {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        padding: 20px;
-      }
 
-      .product {
-        width: 1570px;
-        border: 1px solid #ccc;
-        margin: 10px;
-        padding: 10px;
-        margin-left: auto;
-        margin-top: 150px;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>商城首页</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
 
-      .product img {
-        max-width: 100%;
-        height: auto;
-        margin-bottom: 30px;
-      }
-      .product-box {
-        width: 300px;
-        height: 300px;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        margin-bottom: 10px;
-        margin-right: 40px;
-        padding: 20px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: box-shadow 0.3s ease;
-        display: inline-block; /* 添加此行 */
-      }
+    header {
+      background-color: #f84f4f;
+      color: #fff;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 2;
+      /* Ensure header is on top */
+    }
 
-      .product-box:hover {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      }
+    .logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 500px;
+    }
 
-      .product-box img {
-        width: 60%;
-        height: 50%;
-        border-radius: 5px;
-      }
+    .sousuo {
+      width: 50px;
+      height: 40px;
+      background-color: hsla(354, 29%, 44%, 0.998);
+      border-radius: 1000px;
+      margin-left: 10px;
+    }
 
-      .product-box h2 {
-        font-size: 1.5em;
-        margin-top: 0px;
-      }
+    .login-btn {
+      background-color: #4caf50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
 
-      .product-box p {
-        margin-top: 30px;
-      }
-      .category-bar {
-        background-color: #ffffff;
-        padding: 10px;
-        width: 100%;
-        position: fixed;
-        top: 70px; /* Adjusted for the header height */
-        z-index: 0; /* Ensure category bar is on top */
-      }
-      .category-bar ul {
-        list-style-type: none;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-      }
-      .category-bar ul li {
-        margin: 0 10px;
-      }
-      .category-bar ul li a {
-        color: #333;
-        text-decoration: none;
-        padding: 5px 10px;
-        border-radius: 5px;
-      }
-      .category-bar ul li a:hover {
-        background-color: #ddd;
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <img src="images/cat.jpg" alt="商城logo" class="logo" />
-      <p><b>圣火喵喵商城</b></p>
-      <a href="denglu.html">
-        <button class="login-btn">登录</button>
-      </a>
-    </header>
-    <div class="category-bar">
-      <ul>
-        <li><a href="#">推荐商品</a></li>
-        <li><a href="#">家电</a></li>
-        <li><a href="#">食品</a></li>
-        <li><a href="#">电脑</a></li>
-        <li><a href="#">男/女装</a></li>
-        <li><a href="#">美妆</a></li>
-        <li><a href="#">图书</a></li>
-        <!-- 可以添加更多分类 -->
-      </ul>
+    .login-btn:hover {
+      background-color: #45a049;
+    }
+
+    nav {
+      background-color: #f4f4f4;
+      padding: 10px;
+      width: 80px;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 70px;
+      /* Adjusted for the header height */
+      z-index: 1;
+    }
+
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    nav ul li {
+      margin-bottom: 10px;
+    }
+
+    nav ul li a {
+      color: #333;
+      text-decoration: none;
+    }
+
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      padding: 20px;
+    }
+
+    .product {
+      width: 1570px;
+      border: 1px solid #ccc;
+      margin: 10px;
+      padding: 10px;
+      margin-left: auto;
+      margin-top: 150px;
+    }
+
+    .product img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 30px;
+    }
+
+    .product-box {
+      width: 300px;
+      height: 300px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      margin-right: 40px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+      display: inline-block;
+      /* 添加此行 */
+    }
+
+    .product-box:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .product-box img {
+      width: 60%;
+      height: 50%;
+      border-radius: 5px;
+    }
+
+    .product-box h2 {
+      font-size: 1.5em;
+      margin-top: 0px;
+    }
+
+    .product-box p {
+      margin-top: 30px;
+    }
+
+    .category-bar {
+      background-color: #ffffff;
+      padding: 10px;
+      width: 100%;
+      position: fixed;
+      top: 70px;
+      /* Adjusted for the header height */
+      z-index: 0;
+      /* Ensure category bar is on top */
+    }
+
+    .category-bar ul {
+      list-style-type: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .category-bar ul li {
+      margin: 0 10px;
+    }
+
+    .category-bar ul li a {
+      color: #333;
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    .category-bar ul li a:hover {
+      background-color: #ddd;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <img src="images/cat.jpg" alt="商城logo" class="logo" />
+    <p><b>圣火喵喵商城</b></p>
+    <a href="denglu.html">
+      <button class="login-btn">登录</button>
+    </a>
+  </header>
+  <div class="category-bar">
+    <ul>
+      <li><a href="#">推荐商品</a></li>
+      <li><a href="#">家电</a></li>
+      <li><a href="#">食品</a></li>
+      <li><a href="#">电脑</a></li>
+      <li><a href="#">男/女装</a></li>
+      <li><a href="#">美妆</a></li>
+      <li><a href="#">图书</a></li>
+      <!-- 可以添加更多分类 -->
+    </ul>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="#">商城首页</a></li>
+      <li><a href="#">购物车</a></li>
+      <li><a href="#">订单中心</a></li>
+      <li><a href="#">收藏中心</a></li>
+      <li><a href="#">个人中心</a></li>
+    </ul>
+  </nav>
+  <div class="product">
+    <div id="product-container">
+      <form id="product"></form>
     </div>
-    <nav>
-      <ul>
-        <li><a href="#">商城首页</a></li>
-        <li><a href="#">购物车</a></li>
-        <li><a href="#">订单中心</a></li>
-        <li><a href="#">收藏中心</a></li>
-        <li><a href="#">个人中心</a></li>
-      </ul>
-    </nav>
-    <div class="product">
-      <div id="product-container">
-        <form id="product"></form>
-      </div>
-    </div>
-  </body>
-  <script>
-    // 使用 AJAX 获取商品信息
-    function fetchProducts() {
-      var xhr = new XMLHttpRequest();
-      xhr.open("GET", "http://localhost:8080/product", true); // 假设后端提供了一个获取所有商品信息的 API
-      xhr.setRequestHeader("Content-Type", "application/json"); // 监听请求状态变化
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-          if (xhr.status === 200) {
-            // 请求成功，处理返回的商品信息
-            var products = JSON.parse(xhr.responseText);
-            displayProducts(products);
-          } else {
-            // 请求失败
-            console.error(
-              "Failed to fetch products. Status code: " + xhr.status
-            );
-          }
+  </div>
+</body>
+<script>
+  // 使用 AJAX 获取商品信息
+  function fetchProducts() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://localhost:8080/product", true); // 假设后端提供了一个获取所有商品信息的 API
+    xhr.setRequestHeader("Content-Type", "application/json"); // 监听请求状态变化
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          // 请求成功，处理返回的商品信息
+          var products = JSON.parse(xhr.responseText);
+          displayProducts(products);
+        } else {
+          // 请求失败
+          console.error(
+            "Failed to fetch products. Status code: " + xhr.status
+          );
         }
-      }; // 发送请求
-      xhr.send();
-    }
-    // 将商品信息显示在页面上
-    function displayProducts(products) {
-      var productListContainer = document.getElementById("product-container");
-      // 清空商品框
-      productListContainer.innerHTML = "";
+      }
+    }; // 发送请求
+    xhr.send();
+  }
+  // 将商品信息显示在页面上
+  function displayProducts(products) {
+    var productListContainer = document.getElementById("product-container");
+    // 清空商品框
+    productListContainer.innerHTML = "";
 
-      // 创建商品列表框
-      var productList = document.createElement("div");
-      productList.className = "product-list";
+    // 创建商品列表框
+    var productList = document.createElement("div");
+    productList.className = "product-list";
 
-      // 遍历商品信息
-      products.forEach(function (product) {
-        // 创建商品框
-        var productBox = document.createElement("div");
-        productBox.className = "product-box";
+    // 遍历商品信息
+    products.forEach(function (product) {
+      // 创建商品框
+      var productBox = document.createElement("div");
+      productBox.className = "product-box";
 
-        // 创建商品图片元素
-        var imageElement = document.createElement("img");
-        imageElement.src = "images/" + product.image; // 假设存储了图片的文件名
-        imageElement.alt = product.productname;
-        productBox.appendChild(imageElement);
+      // 创建商品图片元素
+      var imageElement = document.createElement("img");
+      imageElement.src = "images/" + product.image; // 假设存储了图片的文件名
+      imageElement.alt = product.productname;
+      productBox.appendChild(imageElement);
 
-        // 创建商品名称元素
-        var nameElement = document.createElement("h2");
-        nameElement.textContent = product.productname;
-        productBox.appendChild(nameElement);
+      // 创建商品名称元素
+      var nameElement = document.createElement("h2");
+      nameElement.textContent = product.productname;
+      productBox.appendChild(nameElement);
 
-        // 创建商品价格元素
-        var priceElement = document.createElement("p");
-        priceElement.textContent = "价格：$" + product.price;
-        productBox.appendChild(priceElement);
+      // 创建商品价格元素
+      var priceElement = document.createElement("p");
+      priceElement.textContent = "价格：$" + product.price;
+      productBox.appendChild(priceElement);
 
-        // 创建商品描述元素
-        var descriptionElement = document.createElement("p");
-        descriptionElement.textContent = "详情：" + product.description;
-        productBox.appendChild(descriptionElement);
-        // 将商品框添加到商品列表框
-        productList.appendChild(productBox);
-      });
-
-      // 将商品列表框添加到商品框容器内
-      productListContainer.appendChild(productList);
-    }
-
-    // 页面加载完成后调用 fetchProducts 函数来获取并显示商品信息
-    document.addEventListener("DOMContentLoaded", function () {
-      fetchProducts();
+      // 创建商品描述元素
+      var descriptionElement = document.createElement("p");
+      descriptionElement.textContent = "详情：" + product.description;
+      productBox.appendChild(descriptionElement);
+      // 将商品框添加到商品列表框
+      productList.appendChild(productBox);
     });
-  </script>
+
+    // 将商品列表框添加到商品框容器内
+    productListContainer.appendChild(productList);
+  }
+
+  // 页面加载完成后调用 fetchProducts 函数来获取并显示商品信息
+  document.addEventListener("DOMContentLoaded", function () {
+    fetchProducts();
+  });
+</script>
+
 </html>
