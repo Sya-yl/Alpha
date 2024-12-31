@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
   <meta charset="UTF-8" />
@@ -185,38 +185,15 @@
   <header>
     <img src="images/cat.jpg" alt="商城logo" class="logo" />
     <p class="biaoti"><b>圣火喵喵商城</b></p>
-    <div class="search-container">
-      <input type="text" id="search-input" class="search-input" placeholder="搜索商品..." />
-      <button onclick="search()" class="search-button">搜索</button>
-    </div>
     <a href="denglu.html">
       <button class="login-btn">退出</button>
     </a>
   </header>
-  <div class="category-bar">
-    <ul>
-      <li><a href="#" class="category" data-category="all">所有商品</a></li>
-      <li><a href="#" class="category" data-category="1">日常</a></li>
-      <li><a href="#" class="category" data-category="2">服装</a></li>
-      <li><a href="#" class="category" data-category="3">食品</a></li>
-      <li>
-        <a href="#" class="category" data-category="4">家电</a>
-      </li>
-      <li><a href="#" class="category" data-category="5">电脑</a></li>
-      <li><a href="#" class="category" data-category="6">美妆</a></li>
-      <li><a href="#" class="category" data-category="7">图书</a></li>
-      <li><a href="#" class="category" data-category="8">玩具</a></li>
-      <!-- 可以添加更多分类 -->
-    </ul>
-  </div>
   <nav>
     <ul>
       <li><a id="shouye-link" href="">商城首页</a></li>
-      <!-- 购物车链接 -->
       <li><a id="cart-link" href="">购物车</a></li>
       <li><a id="dd-link" href="">订单中心</a></li>
-      <li><a id="sc-link" href="">收藏中心</a></li>
-      <li><a id="gr-link" href="">个人中心</a></li>
     </ul>
   </nav>
   <div class="product">
@@ -233,20 +210,14 @@
   function updateLinks() {
     var link = "gouwuche(1).html?userId=" + userId;
     var link1 = "dingdan.html?userId=" + userId;
-    var link2 = "shoucang.html?userId=" + userId;
-    var link3 = "geren.html?userId=" + userId;
     var link4 = "shouye.html?userId=" + userId;
 
     var cartLink = document.getElementById("cart-link");
     var ddLink = document.getElementById("dd-link");
-    var scLink = document.getElementById("sc-link");
-    var grLink = document.getElementById("gr-link");
     var shouyeLink = document.getElementById("shouye-link");
 
     cartLink.href = link;
     ddLink.href = link1;
-    scLink.href = link2;
-    grLink.href = link3;
     shouyeLink.href = link4;
   }
 
@@ -258,144 +229,81 @@
     fetchProducts();
   });
 
-  //分类功能实现
-  document.addEventListener("DOMContentLoaded", function () {
-    const categories = document.querySelectorAll(".category");
-
-    categories.forEach(function (category) {
-      category.addEventListener("click", function (e) {
-        e.preventDefault();
-
-        // 获取被点击的分类
-        const selectedCategory = category.getAttribute("data-category");
-        console.log(selectedCategory);
-
-        // 根据分类触发相应的筛选功能
-        filterProducts(selectedCategory);
-      });
-    });
-  });
-
-  //获取指定类别的商品信息
-  function filterProducts(selectedCategory) {
-    if (selectedCategory == "all")
-      fetchProducts(); //选择所有商品则调用显示所有商品信息；
-    else {
-      var xhr = new XMLHttpRequest();
-      xhr.open(
-        "GET",
-        "http://localhost:8080/product/" + selectedCategory,
-        true
-      ); // 假设后端提供了一个获取所有商品信息的 API
-      xhr.setRequestHeader("Content-Type", "application/json"); // 监听请求状态变化
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-          if (xhr.status === 200) {
-            // 请求成功，处理返回的商品信息
-            var products = JSON.parse(xhr.responseText);
-            displayProducts(products);
-          } else {
-            // 请求失败
-            console.error(
-              "Failed to fetch products. Status code: " + xhr.status
-            );
-          }
-        }
-      }; // 发送请求
-      xhr.send();
-    }
-  }
-
   // 使用 AJAX 获取商品信息
   function fetchProducts() {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "http://localhost:8080/product", true); // 假设后端提供了一个获取所有商品信息的 API
-    xhr.setRequestHeader("Content-Type", "application/json"); // 监听请求状态变化
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200) {
-          // 请求成功，处理返回的商品信息
-          var products = JSON.parse(xhr.responseText);
-          displayProducts(products);
-        } else {
-          // 请求失败
-          console.error(
-            "Failed to fetch products. Status code: " + xhr.status
-          );
-        }
+  // 使用 fetch 获取所有商品数据
+  fetch('http://localhost:8080/product') 
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('网络响应失败');
       }
-    }; // 发送请求
-    xhr.send();
-  }
-  // 将商品信息显示在页面上
-  function displayProducts(products) {
-    var productListContainer = document.getElementById("product-container");
-    // 清空商品框
-    productListContainer.innerHTML = "";
-
-    // 创建商品列表框
-    var productList = document.createElement("div");
-    productList.className = "product-list";
-
-    // 遍历商品信息
-    products.forEach(function (product) {
-      // 创建商品框
-      var productBox = document.createElement("div");
-      productBox.className = "product-box";
-
-      // 创建商品图片元素
-      var imageElement = document.createElement("img");
-      imageElement.src = "images/" + product.image; // 假设存储了图片的文件名
-      imageElement.alt = product.productname;
-      productBox.appendChild(imageElement);
-
-      // 创建商品名称元素
-      var nameElement = document.createElement("h2");
-      nameElement.textContent = product.productname;
-      productBox.appendChild(nameElement);
-
-      // 创建商品价格元素
-      var priceElement = document.createElement("p");
-      priceElement.textContent = "价格：$" + product.price;
-      productBox.appendChild(priceElement);
-
-      // 创建商品描述元素
-      var descriptionElement = document.createElement("p");
-      descriptionElement.textContent = "详情：" + product.description;
-      productBox.appendChild(descriptionElement); // 创建商品数量输入框
-
-      var quantityInput = document.createElement("input");
-      quantityInput.type = "number";
-      quantityInput.min = "1";
-      quantityInput.value = "1"; // 默认数量为1
-      productBox.appendChild(quantityInput); //创建购物车按钮
-
-      var cartButton = document.createElement("button");
-      cartButton.textContent = "加入购物车";
-      cartButton.className = "cart-button"; // 添加点击事件处理程序
-      cartButton.addEventListener("click", function () {
-        var quantity = parseInt(quantityInput.value, 10); //商品数量
-        addToCart(product, quantity); // 调用添加到购物车函数，并将商品作为参数传递
-      });
-      productBox.appendChild(cartButton);
-
-      // 将商品框添加到商品列表框
-      productList.appendChild(productBox);
+      return response.json();
+    })
+    .then(products => {
+      displayProducts(products); // 调用 displayProducts 显示商品
+    })
+    .catch(error => {
+      console.error('获取商品失败:', error);
     });
+}
 
-    // 将商品列表框添加到商品框容器内
-    productListContainer.appendChild(productList);
-  }
+// 将商品信息显示在页面上
+function displayProducts(products) {
+  const productListContainer = document.getElementById("product-container");
+  // 清空商品框
+  productListContainer.innerHTML = "";
+
+  // 创建商品列表框
+  const productList = document.createElement("div");
+  productList.className = "product-list";
+
+  // 遍历商品信息
+  products.forEach(function (product) {
+    // 创建商品框
+    const productBox = document.createElement("div");
+    productBox.className = "product-box";
+
+    // 创建商品图片元素
+    const imageElement = document.createElement("img");
+    imageElement.src = product.image; 
+    imageElement.alt = product.pname;
+    productBox.appendChild(imageElement);
+
+    // 创建商品名称元素
+    const nameElement = document.createElement("h2");
+    nameElement.textContent = product.pname;
+    productBox.appendChild(nameElement);
+
+    // 创建商品价格元素
+    const priceElement = document.createElement("p");
+    priceElement.textContent = "价格：$" + product.price;
+    productBox.appendChild(priceElement);
+
+    // 将商品框添加到商品列表框
+    productList.appendChild(productBox);
+
+    // 创建添加到购物车按钮
+    const addToCartButton = document.createElement("button");
+        addToCartButton.textContent = "添加到购物车";
+        addToCartButton.onclick = function () {
+          addToCart(product);
+        };
+        productBox.appendChild(addToCartButton);
+  });
+
+  // 将商品列表框添加到商品框容器内
+  productListContainer.appendChild(productList);
+}
 
   //添加购物车功能
   function addToCart(product, quantity) {
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://localhost:8080/shoppingcart", true);
+    xhr.open("POST", "http://localhost:8080/shoppingcart/update", true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
       if (xhr.readyState === XMLHttpRequest.DONE) {
         if (xhr.status === 200) {
-          var result = JSON.parse(xhr.responseText);
+          var result = xhr.responseText;;
           if (result) {
             console.log("添加成功", xhr.responseText);
           } else {
@@ -408,9 +316,10 @@
     };
 
     var jsonData = JSON.stringify({
-      userid: userId,
-      productid: product.productid,
-      quantity: quantity,
+      cartid: +userId,
+      uid: userId,
+      pid: product.pid,
+      quantity: 1,
     });
     console.log(jsonData);
     xhr.send(jsonData);

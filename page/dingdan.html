@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
   <meta charset="UTF-8" />
@@ -26,7 +26,7 @@
     .logo {
       width: 50px;
       height: 50px;
-      border-radius: 500px;
+      border-radius: 50%;
     }
 
     nav {
@@ -60,6 +60,7 @@
       border-radius: 8px;
       padding: 10px;
       margin-bottom: 20px;
+      background-color: #fafafa;
     }
 
     .order-header {
@@ -97,6 +98,19 @@
       text-align: right;
       font-weight: bold;
     }
+
+    button {
+      background-color: #f35a5a;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #d54f4f;
+    }
   </style>
 </head>
 
@@ -110,51 +124,99 @@
   </header>
   <div class="container">
     <h1>订单中心</h1>
-    <div class="order">
-      <div class="order-header">
-        <h2>订单编号: #123456</h2>
-        <span>下单时间: 2024-05-09 10:00</span>
-      </div>
-      <ul class="order-items">
-        <li class="order-item">商品名称: 商品A</li>
-        <li class="order-item">商品数量: 2</li>
-        <li class="order-item">单价: $10.00</li>
-        <li class="order-item">小计: $20.00</li>
-      </ul>
-      <div class="order-total">总计: $20.00</div>
-    </div>
-    <div class="order">
-      <div class="order-header">
-        <h2>订单编号: #789012</h2>
-        <span>下单时间: 2024-05-08 15:30</span>
-      </div>
-      <ul class="order-items">
-        <li class="order-item">商品名称: 商品B</li>
-        <li class="order-item">商品数量: 1</li>
-        <li class="order-item">单价: $15.00</li>
-        <li class="order-item">小计: $15.00</li>
-      </ul>
-      <div class="order-total">总计: $15.00</div>
-    </div>
+    <!-- 订单展示区域 -->
+    <div id="orders-container"></div>
   </div>
+
+  <script>
+    // 获取URL中的查询参数
+    const queryString = window.location.search;
+
+    // 解析查询参数
+    const urlParams = new URLSearchParams(queryString);
+
+    // 获取userId参数的值
+    const userId = urlParams.get("userId");
+
+    console.log(userId);
+
+    // 设置首页链接地址
+    var link = "shouye.html?userId=" + userId;
+    var shouyeLink = document.getElementById("shouye-link");
+    shouyeLink.href = link;
+
+    async function fetchProductPrice(pid) {
+  try {
+    const response = await fetch(`http://localhost:8080/product/${pid}`);
+    const product = await response.json();
+    return product.price;
+  } catch (error) {
+    console.error('获取商品价格失败:', error);
+    return 999999; // 如果获取价格失败，返回 0 作为默认值
+  }
+}
+
+    // 获取订单数据并显示
+fetch(`http://localhost:8080/order/user/${userId}`)
+  .then(response => response.json())
+  .then(orders => {
+    const ordersContainer = document.getElementById("orders-container");
+    ordersContainer.innerHTML = ''; // 清空订单容器
+
+    if (orders.length === 0) {
+      ordersContainer.innerHTML = '<p>没有找到您的订单</p>';
+    } else {
+      // 循环显示每个订单
+      orders.forEach(async (order) => {
+        const orderDiv = document.createElement("div");
+        orderDiv.className = "order";
+        
+        // 获取商品价格
+        const productPrice = await fetchProductPrice(order.pid);
+        
+        // 计算总金额
+        const totalAmount = productPrice * order.pquantity;
+
+        orderDiv.innerHTML = `
+          <div class="order-header">
+            <h2>订单ID: ${order.oid}</h2>
+          </div>
+          <ul class="order-items">
+            <li>用户ID: ${order.uid}</li>
+            <li>商户ID: ${order.sid}</li>
+            <li>商品ID: ${order.pid}</li>
+            <li>商品数量: ${order.pquantity}</li>
+          </ul>
+          <div class="order-total">总金额: ¥${totalAmount.toFixed(2)}</div>
+          <button onclick="deleteOrder(${order.oid})">删除订单</button>
+        `;
+        ordersContainer.appendChild(orderDiv);
+      });
+    }
+  })
+  .catch(error => {
+    console.error('获取订单信息失败:', error);
+  });
+
+    // 删除订单功能
+    function deleteOrder(orderId) {
+      if (confirm("确定要删除这个订单吗?")) {
+        fetch(`http://localhost:8080/order/delete/${orderId}`, {
+          method: 'DELETE',
+        })
+          .then(response => response.json())
+          .then(data => {
+            alert("订单已删除！");
+            // 刷新页面以更新订单列表
+            window.location.reload();
+          })
+          .catch(error => {
+            console.error('删除订单失败:', error);
+          });
+      }
+    }
+  </script>
+
 </body>
-<script>
-  // 获取URL中的查询参数
-  const queryString = window.location.search;
-
-  // 解析查询参数
-  const urlParams = new URLSearchParams(queryString);
-
-  // 获取userID参数的值
-  const userId = urlParams.get("userId");
-
-  console.log(userId);
-
-  var link = "shouye.html?userId=" + userId; // 获取首页链接元素
-
-  var shouyeLink = document.getElementById("shouye-link"); // 设置首页链接地址
-
-  shouyeLink.href = link;
-</script>
 
 </html>

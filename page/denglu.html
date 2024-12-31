@@ -71,14 +71,7 @@
     <form id="loginForm">
       <input type="text" id="loginId" name="id" placeholder="账号" />
       <input type="password" id="loginPassword" name="password" placeholder="密码" />
-      <div>
-        <label for="permissions">登录方式:</label>
-        <select id="permissions" name="permissions">
-          <option value="" disabled selected>请选择登录方式</option>
-          <option value="0">管理员登录</option>
-          <option value="1">用户登录</option>
-        </select>
-      </div>
+      
       <div class="forgot-password">
         <a href="zhuce.html">注册账号</a>
       </div>
@@ -101,34 +94,30 @@
       // 设置请求方法和URL
       xhr.open(
         "POST",
-        "http://localhost:8080/user/" + formData.get("id"),
+        "http://localhost:8080/user/login/" + formData.get("id"),
         true
       );
       // 监听请求状态变化
       xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-          if (xhr.status === 200) {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
-            if (response === true) {
-              alert("登录成功");
-              var selectedValue = document.getElementById("permissions").value;
-              if (selectedValue === "0") {
-                // 如果选择了管理员登录，则跳转到管理员界面
+            if (response === 2) {
+                // 登录失败
+                alert("登录失败");
+            } else if (response === 1) {
+                // 如果返回值为1，则跳转到用户界面
+                window.location.href = `shouye.html?userId=${formData.get("id")}`;
+            } else if (response === 0) {
+                // 如果返回值为0，则跳转到管理员界面
                 window.location.href = "ProductController.html";
-              } else if (selectedValue === "1") {
-                // 如果选择了用户登录，则跳转到用户界面
-                window.location.href = `shouye.html?userId=${formData.get(
-                  "id"
-                )}`;
-              }
-            } else {
-              alert("登录失败");
             }
-          } else {
+        } else {
             console.error("请求错误:", xhr.status);
-          }
         }
-      };
+    }
+};
+
       // 设置请求头
       xhr.setRequestHeader("Content-Type", "application/json");
       // 将表单数据转换为JSON格式

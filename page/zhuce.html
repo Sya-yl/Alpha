@@ -68,19 +68,17 @@
   <h2>注册</h2>
   <form id="registrationForm">
     <label for="regID">id：</label>
-    <input type="text" id="regid" name="id" /><br />
+    <input type="text" id="regid" name="uid" /><br />
     <label for="regname">用户名：</label>
-    <input type="text" id="regname" name="name" /><br />
+    <input type="text" id="regname" name="uname" /><br />
     <label for="regPassword">密码：</label>
-    <input type="password" id="regPassword" name="password" /><br />
-    <label for="regPermissions">权限（1为用户，0为管理员）：</label>
-    <input type="text" id="regPermissions" name="permissions" /><br />
-    <label for="regPermissions">邮箱</label>
-    <input type="text" id="regemail" name="email" /><br />
+    <input type="password" id="regPassword" name="upassword" /><br />
     <label for="regPermissions">电话号码：</label>
-    <input type="text" id="regphonenumber" name="phonenumber" /><br />
+    <input type="text" id="regphonenumber" name="uphone" /><br />
     <label for="regPermissions">地址：</label>
-    <input type="text" id="regaddress" name="address" /><br />
+    <input type="text" id="regaddress" name="uaddress" /><br />
+    <label for="regPermissions">性别：</label>
+    <input type="text" id="regsex" name="usex" /><br />
 
     <input type="submit" value="注册" />
   </form>
@@ -96,7 +94,7 @@
       // 创建XMLHttpRequest对象
       var xhr = new XMLHttpRequest();
       // 设置请求方法和URL
-      xhr.open("POST", "http://localhost:8080/user/", true);
+      xhr.open("POST", "http://localhost:8080/user/register", true);
       // 设置请求头
       xhr.setRequestHeader("Content-Type", "application/json");
       0.1;
@@ -107,7 +105,7 @@
             var response = xhr.responseText;
             alert(response);
             // 显示响应消息
-            window.location.href = `shouye.html?userId=${formData.get("id")}`;
+            window.location.href = `shouye.html?userId=${formData.get("uid")}`;
           } else {
             console.error("请求错误:", xhr.status);
           }
@@ -117,10 +115,12 @@
 
       // 发送请求
       var jsonData = JSON.stringify({
-        password: formData.get("password"),
-        id: formData.get("id"),
-        name: formData.get("name"),
-        permissions: formData.get("permissions"),
+        uid: formData.get("uid"),
+        uname: formData.get("uname"),
+        upassword: formData.get("upassword"),
+        uphone: formData.get("uphone"),
+        uaddress: formData.get("uaddress"),
+        usex: formData.get("usex")
       });
       console.log(jsonData);
       xhr.send(jsonData);
